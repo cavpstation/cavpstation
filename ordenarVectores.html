@@ -13,26 +13,28 @@
 
         <div class="columns">
             <div class="column">
+                <label class="label">Ingrese el primer vector:</label>
                 <div class="field">
-                    <label class="label">Ingrese el primer vector:</label>
                     <div class="control">
                         <input id="vector1" class="input" type="number" min="1" max="100" placeholder="Ingrese un número">
                     </div>
-                    <p id="textoVector1" class="help"></p>
+                    <p id="textoVector1" class="help is-hidden"></p>
                 </div>
             </div>
             <div class="column">
+                <label class="label">Ingrese el segundo vector:</label>
                 <div class="field">
-                    <label class="label">Ingrese el segundo vector:</label>
                     <div class="control">
                         <input id="vector2" class="input" type="number" min="1" max="100" placeholder="Ingrese un número">
                     </div>
-                    <p id="textoVector2" class="help"></p>
+                    <p id="textoVector2" class="help is-hidden"></p>
                 </div>
             </div>
         </div>
 
         <button id="botonAgregar" class="button is-primary" onclick="agregarNumeros()">Agregar Números</button>
+        <button id="botonRecargar" class="button is-warning" onclick="window.location.reload()">Recargar Página</button>
+        <button id="botonCreditos" class="button is-info" onclick="mostrarCreditos()">Créditos</button>
 
         <div class="mt-4">
             <h2 class="subtitle">Vector Ordenado:</h2>
@@ -59,26 +61,21 @@
             const numero1 = parseInt(inputVector1.value);
             const numero2 = parseInt(inputVector2.value);
 
-            if (validarNumero(numero1, vector1) && validarNumero(numero2, vector2)) {
-                vector1.push(numero1);
-                vector2.push(numero2);
-
-                // Ordenar los vectores
-                vector1.sort((a, b) => a - b);
-                vector2.sort((a, b) => a - b);
-
-                // Mostrar los números agregados
-                textoVector1.innerHTML += `${numero1} `;
-                textoVector2.innerHTML += `${numero2} `;
-
-                // Ocultar campos de entrada cuando se alcanza el límite
-                if (vector1.length === 5) {
+            if (validarNumero(numero1) && validarNumero(numero2)) {
+                if (vector1.length < 5) {
+                    vector1.push(numero1);
+                    textoVector1.innerHTML += `${numero1} `;
+                } else {
+                    textoVector1.innerHTML = 'Ya se han ingresado 5 números';
                     inputVector1.style.display = 'none';
-                    textoVector1.style.display = 'none';
                 }
-                if (vector2.length === 5) {
+
+                if (vector2.length < 5) {
+                    vector2.push(numero2);
+                    textoVector2.innerHTML += `${numero2} `;
+                } else {
+                    textoVector2.innerHTML = 'Ya se han ingresado 5 números';
                     inputVector2.style.display = 'none';
-                    textoVector2.style.display = 'none';
                 }
 
                 // Ocultar botón cuando ambos vectores tienen 5 elementos
@@ -93,20 +90,12 @@
                 inputVector1.value = '';
                 inputVector2.value = '';
             } else {
-                alert('Por favor, ingrese un número válido y en orden ascendente.');
+                alert('Por favor, ingrese un número válido y en el rango entre 1 y 100.');
             }
         }
 
-        function validarNumero(numero, vector) {
-            if (isNaN(numero) || numero < 1 || numero > 100) {
-                return false;
-            }
-
-            if (vector.length > 0 && numero <= vector[vector.length - 1]) {
-                return false;
-            }
-
-            return true;
+        function validarNumero(numero) {
+            return !isNaN(numero) && numero >= 1 && numero <= 100;
         }
 
         function mostrarVectorOrdenado(vector) {

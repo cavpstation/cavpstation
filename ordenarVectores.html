@@ -3,61 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mezcla de Vectores - Bulma</title>
+    <title>Ordenar Vectores</title>
     <!-- Enlace al archivo CSS de Bulma -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
 </head>
 <body>
     <div class="container">
-        <h1 class="title mt-5">Mezcla de Vectores</h1>
+        <h1 class="title mt-5">Ordenar Vectores</h1>
 
         <div class="columns">
             <div class="column">
-                <div id="ingresoVector1">
-                    <div class="field">
-                        <label class="label">Ingrese el primer vector (max 5 elementos):</label>
-                        <div class="control">
-                            <input id="vector1" class="input" type="number" min="1" max="100" placeholder="Ingrese un número">
-                        </div>
-                        <p class="help is-success" id="confirmacion1" style="display: none;">Número ingresado</p>
-                        <p class="help is-danger" id="error1" style="display: none;">El número debe ser mayor que el anterior</p>
+                <div class="field">
+                    <label class="label">Ingrese el primer vector:</label>
+                    <div class="control">
+                        <input id="vector1" class="input" type="number" min="1" max="100" placeholder="Ingrese un número">
                     </div>
-                    <button onclick="agregarNumero('vector1', 'confirmacion1', 'error1', vector1, 'ingresoVector1', 'vector1Listo')" class="button is-primary">Agregar</button>
-                </div>
-                <div class="mt-4" id="vector1Listo" style="display: none;">
-                    <h2 class="subtitle">Vector 1:</h2>
                 </div>
             </div>
             <div class="column">
-                <div id="ingresoVector2">
-                    <div class="field">
-                        <label class="label">Ingrese el segundo vector (max 5 elementos):</label>
-                        <div class="control">
-                            <input id="vector2" class="input" type="number" min="1" max="100" placeholder="Ingrese un número">
-                        </div>
-                        <p class="help is-success" id="confirmacion2" style="display: none;">Número ingresado</p>
-                        <p class="help is-danger" id="error2" style="display: none;">El número debe ser mayor que el anterior</p>
+                <div class="field">
+                    <label class="label">Ingrese el segundo vector:</label>
+                    <div class="control">
+                        <input id="vector2" class="input" type="number" min="1" max="100" placeholder="Ingrese un número">
                     </div>
-                    <button onclick="agregarNumero('vector2', 'confirmacion2', 'error2', vector2, 'ingresoVector2', 'vector2Listo')" class="button is-primary">Agregar</button>
-                </div>
-                <div class="mt-4" id="vector2Listo" style="display: none;">
-                    <h2 class="subtitle">Vector 2:</h2>
                 </div>
             </div>
         </div>
 
-        <button onclick="mezclarVectores()" class="button is-primary" id="mezclar" style="display: none;">Mezclar</button>
-        <button onclick="refrescarPagina()" class="button is-info">Ingresar Nuevos Vectores</button>
+        <button class="button is-primary" onclick="agregarNumeros()">Agregar Números</button>
 
-        <div class="mt-4" id="resultado" style="display: none;">
-            <h2 class="subtitle">Vector Mezclado:</h2>
-            <p id="vectorMezclado"></p>
+        <div class="mt-4">
+            <h2 class="subtitle">Vector Ordenado:</h2>
+            <p id="vectorOrdenado"></p>
         </div>
 
-        <button onclick="mostrarCreditos()" class="button is-info mt-5">Créditos</button>
-        <div id="creditos" style="display: none;">
-            <h2 class="subtitle mt-5">Créditos:</h2>
-            <p>Este programa fue creado por [Tu nombre]</p>
+        <div class="mt-5" style="display: none;" id="creditos">
+            <h2 class="subtitle">Créditos:</h2>
+            <p>Este programa fue creado por Carlos Alberto Villalba Peña </p>
+            <p>Regional Santander - Centro Agroturistico</p>
+            <p>SENA 2024</p>
         </div>
     </div>
 
@@ -66,54 +50,61 @@
         let vector1 = [];
         let vector2 = [];
 
-        function agregarNumero(idInput, idConfirmacion, idError, vector, idIngreso, idLista) {
-            const input = document.getElementById(idInput);
-            const confirmacion = document.getElementById(idConfirmacion);
-            const error = document.getElementById(idError);
-            const ingreso = document.getElementById(idIngreso);
-            const lista = document.getElementById(idLista);
-            const numero = parseInt(input.value);
+        function agregarNumeros() {
+            const inputVector1 = document.getElementById('vector1');
+            const inputVector2 = document.getElementById('vector2');
+            const numero1 = parseInt(inputVector1.value);
+            const numero2 = parseInt(inputVector2.value);
 
-            if (!isNaN(numero) && numero >= 1 && numero <= 100) {
-                if (vector.length === 0 || numero > vector[vector.length - 1]) {
-                    vector.push(numero);
-                    input.value = '';
-                    confirmacion.style.display = 'block';
-                    error.style.display = 'none';
-                    if (vector.length === 5) {
-                        ingreso.style.display = 'none';
-                        lista.style.display = 'block';
-                        mostrarVector(lista, vector);
-                        if (vector1.length === 5 && vector2.length === 5) {
-                            document.getElementById('mezclar').style.display = 'block';
-                        }
-                    }
-                } else {
-                    error.style.display = 'block';
-                }
+            if (validarNumero(numero1, vector1) && validarNumero(numero2, vector2)) {
+                vector1.push(numero1);
+                vector2.push(numero2);
+
+                // Ordenar los vectores
+                vector1.sort((a, b) => a - b);
+                vector2.sort((a, b) => a - b);
+
+                // Unir y ordenar los vectores mezclados
+                const vectorMezclado = [...vector1, ...vector2].sort((a, b) => a - b);
+
+                // Mostrar el vector ordenado
+                mostrarVectorOrdenado(vectorMezclado);
+
+                // Mostrar los números agregados al vector
+                mostrarNumerosAgregados();
+
+                // Limpiar los campos de entrada
+                inputVector1.value = '';
+                inputVector2.value = '';
             } else {
-                alert('Por favor, ingrese un número válido entre 1 y 100.');
+                alert('Por favor, ingrese un número válido y en orden ascendente.');
             }
         }
 
-        function mostrarVector(lista, vector) {
-            const contenido = vector.join(', ');
-            lista.innerHTML = `<p>${contenido}</p>`;
+        function validarNumero(numero, vector) {
+            if (isNaN(numero) || numero < 1 || numero > 100) {
+                return false;
+            }
+
+            if (vector.length > 0 && numero <= vector[vector.length - 1]) {
+                return false;
+            }
+
+            return true;
         }
 
-        function mezclarVectores() {
-            const vectorMezclado = [...vector1, ...vector2].sort((a, b) => a - b);
-            const resultado = vectorMezclado.join(', ');
-            document.getElementById('vectorMezclado').textContent = resultado;
-            document.getElementById('resultado').style.display = 'block';
+        function mostrarVectorOrdenado(vector) {
+            const resultado = vector.join(' ');
+            document.getElementById('vectorOrdenado').textContent = resultado;
+        }
+
+        function mostrarNumerosAgregados() {
+            const numerosAgregados = [...vector1, ...vector2].join(', ');
+            alert('Números agregados al vector: ' + numerosAgregados);
         }
 
         function mostrarCreditos() {
             document.getElementById('creditos').style.display = 'block';
-        }
-
-        function refrescarPagina() {
-            location.reload();
         }
     </script>
 </body>

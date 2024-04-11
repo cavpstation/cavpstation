@@ -18,6 +18,7 @@
                     <div class="control">
                         <input id="vector1" class="input" type="number" min="1" max="100" placeholder="Ingrese un número">
                     </div>
+                    <p id="textoVector1" class="help"></p>
                 </div>
             </div>
             <div class="column">
@@ -26,11 +27,12 @@
                     <div class="control">
                         <input id="vector2" class="input" type="number" min="1" max="100" placeholder="Ingrese un número">
                     </div>
+                    <p id="textoVector2" class="help"></p>
                 </div>
             </div>
         </div>
 
-        <button class="button is-primary" onclick="agregarNumeros()">Agregar Números</button>
+        <button id="botonAgregar" class="button is-primary" onclick="agregarNumeros()">Agregar Números</button>
 
         <div class="mt-4">
             <h2 class="subtitle">Vector Ordenado:</h2>
@@ -39,9 +41,7 @@
 
         <div class="mt-5" style="display: none;" id="creditos">
             <h2 class="subtitle">Créditos:</h2>
-            <p>Este programa fue creado por Carlos Alberto Villalba Peña </p>
-            <p>Regional Santander - Centro Agroturistico</p>
-            <p>SENA 2024</p>
+            <p>Este programa fue creado por [Tu nombre]</p>
         </div>
     </div>
 
@@ -53,6 +53,9 @@
         function agregarNumeros() {
             const inputVector1 = document.getElementById('vector1');
             const inputVector2 = document.getElementById('vector2');
+            const textoVector1 = document.getElementById('textoVector1');
+            const textoVector2 = document.getElementById('textoVector2');
+            const botonAgregar = document.getElementById('botonAgregar');
             const numero1 = parseInt(inputVector1.value);
             const numero2 = parseInt(inputVector2.value);
 
@@ -64,14 +67,27 @@
                 vector1.sort((a, b) => a - b);
                 vector2.sort((a, b) => a - b);
 
-                // Unir y ordenar los vectores mezclados
-                const vectorMezclado = [...vector1, ...vector2].sort((a, b) => a - b);
+                // Mostrar los números agregados
+                textoVector1.innerHTML += `${numero1} `;
+                textoVector2.innerHTML += `${numero2} `;
+
+                // Ocultar campos de entrada cuando se alcanza el límite
+                if (vector1.length === 5) {
+                    inputVector1.style.display = 'none';
+                    textoVector1.style.display = 'none';
+                }
+                if (vector2.length === 5) {
+                    inputVector2.style.display = 'none';
+                    textoVector2.style.display = 'none';
+                }
+
+                // Ocultar botón cuando ambos vectores tienen 5 elementos
+                if (vector1.length === 5 && vector2.length === 5) {
+                    botonAgregar.style.display = 'none';
+                }
 
                 // Mostrar el vector ordenado
-                mostrarVectorOrdenado(vectorMezclado);
-
-                // Mostrar los números agregados al vector
-                mostrarNumerosAgregados();
+                mostrarVectorOrdenado([...vector1, ...vector2]);
 
                 // Limpiar los campos de entrada
                 inputVector1.value = '';
@@ -96,11 +112,6 @@
         function mostrarVectorOrdenado(vector) {
             const resultado = vector.join(' ');
             document.getElementById('vectorOrdenado').textContent = resultado;
-        }
-
-        function mostrarNumerosAgregados() {
-            const numerosAgregados = [...vector1, ...vector2].join(', ');
-            alert('Números agregados al vector: ' + numerosAgregados);
         }
 
         function mostrarCreditos() {

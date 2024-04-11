@@ -56,7 +56,7 @@
         <button onclick="mostrarCreditos()" class="button is-info mt-5">Créditos</button>
         <div id="creditos" style="display: none;">
             <h2 class="subtitle mt-5">Créditos:</h2>
-            <p>Este programa fue creado por Carlos Alberto Villalba Peña</p>
+                <p>Este programa fue creado por Carlos Alberto Villalba Peña</p>
             <p>Regional Santander - Centro Agroturistico</p>
              <p>SENA 2024</p>
         </div>
@@ -81,11 +81,13 @@
                     input.value = '';
                     confirmacion.style.display = 'block';
                     error.style.display = 'none';
-                    ingreso.style.display = 'none';
-                    lista.style.display = 'block';
-                    mostrarVector(lista, vector);
-                    if (vector1.length === 5 && vector2.length === 5) {
-                        document.getElementById('mezclar').style.display = 'block';
+                    if (vector.length === 5) {
+                        ingreso.style.display = 'none';
+                        lista.style.display = 'block';
+                        mostrarVector(lista, vector);
+                        if (vector1.length === 5 && vector2.length === 5) {
+                            document.getElementById('mezclar').style.display = 'block';
+                        }
                     }
                 } else {
                     error.style.display = 'block';

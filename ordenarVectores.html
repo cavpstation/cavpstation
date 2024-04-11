@@ -14,30 +14,36 @@
         <div class="columns">
             <div class="column">
                 <label class="label">Ingrese el primer vector:</label>
-                <div class="field">
-                    <div class="control">
+                <div class="field is-grouped">
+                    <p class="control is-expanded">
                         <input id="vector1" class="input" type="number" min="1" max="100" placeholder="Ingrese un número">
-                    </div>
-                    <p id="textoVector1" class="help is-hidden"></p>
+                    </p>
+                    <p class="control">
+                        <button id="botonAgregarVector1" class="button is-primary" onclick="agregarNumero('vector1')">Agregar</button>
+                    </p>
                 </div>
+                <p id="textoVector1" class="help is-hidden"></p>
             </div>
             <div class="column">
                 <label class="label">Ingrese el segundo vector:</label>
-                <div class="field">
-                    <div class="control">
+                <div class="field is-grouped">
+                    <p class="control is-expanded">
                         <input id="vector2" class="input" type="number" min="1" max="100" placeholder="Ingrese un número">
-                    </div>
-                    <p id="textoVector2" class="help is-hidden"></p>
+                    </p>
+                    <p class="control">
+                        <button id="botonAgregarVector2" class="button is-primary" onclick="agregarNumero('vector2')">Agregar</button>
+                    </p>
                 </div>
+                <p id="textoVector2" class="help is-hidden"></p>
             </div>
         </div>
 
-        <button id="botonAgregar" class="button is-primary" onclick="agregarNumeros()">Agregar Números</button>
-        <button id="botonRecargar" class="button is-warning" onclick="window.location.reload()">Recargar Página</button>
+        <button id="botonMezclar" class="button is-success" onclick="mezclarVectores()">Mezclar y Ordenar</button>
+        <button id="botonRecargar" class="button is-warning is-hidden" onclick="window.location.reload()">Recargar Página</button>
         <button id="botonCreditos" class="button is-info" onclick="mostrarCreditos()">Créditos</button>
 
         <div class="mt-4">
-            <h2 class="subtitle">Vector Ordenado:</h2>
+            <h2 class="subtitle">Vector Mezclado y Ordenado:</h2>
             <p id="vectorOrdenado"></p>
         </div>
 
@@ -54,43 +60,43 @@
         let vector1 = [];
         let vector2 = [];
 
-        function agregarNumeros() {
-            const inputVector1 = document.getElementById('vector1');
-            const inputVector2 = document.getElementById('vector2');
-            const textoVector1 = document.getElementById('textoVector1');
-            const textoVector2 = document.getElementById('textoVector2');
-            const botonAgregar = document.getElementById('botonAgregar');
-            const numero1 = parseInt(inputVector1.value);
-            const numero2 = parseInt(inputVector2.value);
+        function agregarNumero(idVector) {
+            const inputVector = document.getElementById(idVector);
+            const textoVector = document.getElementById('texto' + idVector);
+            const botonAgregar = document.getElementById('botonAgregar' + idVector);
+            const numero = parseInt(inputVector.value);
 
-            if (validarNumero(numero1) && validarNumero(numero2)) {
-                if (vector1.length < 5) {
-                    vector1.push(numero1);
-                    textoVector1.innerHTML += `${numero1} `;
-                } else {
-                    textoVector1.innerHTML = 'Ya se han ingresado 5 números';
-                    inputVector1.style.display = 'none';
-                }
-
-                if (vector2.length < 5) {
-                    vector2.push(numero2);
-                    textoVector2.innerHTML += `${numero2} `;
-                } else {
-                    textoVector2.innerHTML = 'Ya se han ingresado 5 números';
-                    inputVector2.style.display = 'none';
-                }
-
-                // Ocultar botón cuando ambos vectores tienen 5 elementos
-                if (vector1.length === 5 && vector2.length === 5) {
-                    botonAgregar.style.display = 'none';
+            if (validarNumero(numero)) {
+                if (idVector === 'vector1') {
+                    if (vector1.length < 5) {
+                        vector1.push(numero);
+                        textoVector.innerHTML += `${numero} `;
+                    } else {
+                        textoVector.innerHTML = 'Ya se han ingresado 5 números';
+                        inputVector.style.display = 'none';
+                        botonAgregar.style.display = 'none';
+                    }
+                } else if (idVector === 'vector2') {
+                    if (vector2.length < 5) {
+                        vector2.push(numero);
+                        textoVector.innerHTML += `${numero} `;
+                    } else {
+                        textoVector.innerHTML = 'Ya se han ingresado 5 números';
+                        inputVector.style.display = 'none';
+                        botonAgregar.style.display = 'none';
+                    }
                 }
 
                 // Mostrar el vector ordenado
                 mostrarVectorOrdenado([...vector1, ...vector2]);
 
-                // Limpiar los campos de entrada
-                inputVector1.value = '';
-                inputVector2.value = '';
+                // Limpiar el campo de entrada
+                inputVector.value = '';
+
+                // Mostrar el botón de recargar al terminar de llenar el vector mezclado
+                if (vector1.length === 5 && vector2.length === 5) {
+                    document.getElementById('botonRecargar').classList.remove('is-hidden');
+                }
             } else {
                 alert('Por favor, ingrese un número válido y en el rango entre 1 y 100.');
             }
@@ -98,6 +104,11 @@
 
         function validarNumero(numero) {
             return !isNaN(numero) && numero >= 1 && numero <= 100;
+        }
+
+        function mezclarVectores() {
+            const vectorMezclado = [...vector1, ...vector2].sort((a, b) => a - b);
+            mostrarVectorOrdenado(vectorMezclado);
         }
 
         function mostrarVectorOrdenado(vector) {

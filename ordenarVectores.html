@@ -47,6 +47,7 @@
         </div>
 
         <button onclick="mezclarVectores()" class="button is-primary" id="mezclar" style="display: none;">Mezclar</button>
+        <button onclick="refrescarPagina()" class="button is-info">Ingresar Nuevos Vectores</button>
 
         <div class="mt-4" id="resultado" style="display: none;">
             <h2 class="subtitle">Vector Mezclado:</h2>
@@ -56,9 +57,7 @@
         <button onclick="mostrarCreditos()" class="button is-info mt-5">Créditos</button>
         <div id="creditos" style="display: none;">
             <h2 class="subtitle mt-5">Créditos:</h2>
-                <p>Este programa fue creado por Carlos Alberto Villalba Peña</p>
-            <p>Regional Santander - Centro Agroturistico</p>
-             <p>SENA 2024</p>
+            <p>Este programa fue creado por [Tu nombre]</p>
         </div>
     </div>
 
@@ -111,6 +110,10 @@
 
         function mostrarCreditos() {
             document.getElementById('creditos').style.display = 'block';
+        }
+
+        function refrescarPagina() {
+            location.reload();
         }
     </script>
 </body>

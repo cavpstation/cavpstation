@@ -13,40 +13,42 @@
 
         <div class="columns">
             <div class="column">
-                <div class="field">
-                    <label class="label">Ingrese el primer vector (max 5 elementos):</label>
-                    <div class="control">
-                        <input id="vector1" class="input" type="number" min="1" max="100" placeholder="Ingrese un número">
+                <div id="ingresoVector1">
+                    <div class="field">
+                        <label class="label">Ingrese el primer vector (max 5 elementos):</label>
+                        <div class="control">
+                            <input id="vector1" class="input" type="number" min="1" max="100" placeholder="Ingrese un número">
+                        </div>
+                        <p class="help is-success" id="confirmacion1" style="display: none;">Número ingresado</p>
+                        <p class="help is-danger" id="error1" style="display: none;">El número debe ser mayor que el anterior</p>
                     </div>
-                    <p class="help is-success" id="confirmacion1" style="display: none;">Número ingresado</p>
-                    <p class="help is-danger" id="error1" style="display: none;">El número debe ser mayor que el anterior</p>
+                    <button onclick="agregarNumero('vector1', 'confirmacion1', 'error1', vector1, 'ingresoVector1', 'vector1Listo')" class="button is-primary">Agregar</button>
                 </div>
-                <button onclick="agregarNumero('vector1', 'confirmacion1', 'error1', vector1)" class="button is-primary">Agregar</button>
-                <div class="mt-4">
+                <div class="mt-4" id="vector1Listo" style="display: none;">
                     <h2 class="subtitle">Vector 1:</h2>
-                    <p id="vector1Listo"></p>
                 </div>
             </div>
             <div class="column">
-                <div class="field">
-                    <label class="label">Ingrese el segundo vector (max 5 elementos):</label>
-                    <div class="control">
-                        <input id="vector2" class="input" type="number" min="1" max="100" placeholder="Ingrese un número">
+                <div id="ingresoVector2">
+                    <div class="field">
+                        <label class="label">Ingrese el segundo vector (max 5 elementos):</label>
+                        <div class="control">
+                            <input id="vector2" class="input" type="number" min="1" max="100" placeholder="Ingrese un número">
+                        </div>
+                        <p class="help is-success" id="confirmacion2" style="display: none;">Número ingresado</p>
+                        <p class="help is-danger" id="error2" style="display: none;">El número debe ser mayor que el anterior</p>
                     </div>
-                    <p class="help is-success" id="confirmacion2" style="display: none;">Número ingresado</p>
-                    <p class="help is-danger" id="error2" style="display: none;">El número debe ser mayor que el anterior</p>
+                    <button onclick="agregarNumero('vector2', 'confirmacion2', 'error2', vector2, 'ingresoVector2', 'vector2Listo')" class="button is-primary">Agregar</button>
                 </div>
-                <button onclick="agregarNumero('vector2', 'confirmacion2', 'error2', vector2)" class="button is-primary">Agregar</button>
-                <div class="mt-4">
+                <div class="mt-4" id="vector2Listo" style="display: none;">
                     <h2 class="subtitle">Vector 2:</h2>
-                    <p id="vector2Listo"></p>
                 </div>
             </div>
         </div>
 
-        <button onclick="mezclarVectores()" class="button is-primary">Mezclar</button>
+        <button onclick="mezclarVectores()" class="button is-primary" id="mezclar" style="display: none;">Mezclar</button>
 
-        <div class="mt-4">
+        <div class="mt-4" id="resultado" style="display: none;">
             <h2 class="subtitle">Vector Mezclado:</h2>
             <p id="vectorMezclado"></p>
         </div>
@@ -54,7 +56,9 @@
         <button onclick="mostrarCreditos()" class="button is-info mt-5">Créditos</button>
         <div id="creditos" style="display: none;">
             <h2 class="subtitle mt-5">Créditos:</h2>
-            <p>Este programa fue creado por [Tu nombre]</p>
+            <p>Este programa fue creado por Carlos Alberto Villalba Peña</p>
+            <p>Regional Santander - Centro Agroturistico</p>
+             <p>SENA 2024</p>
         </div>
     </div>
 
@@ -63,10 +67,12 @@
         let vector1 = [];
         let vector2 = [];
 
-        function agregarNumero(idInput, idConfirmacion, idError, vector) {
+        function agregarNumero(idInput, idConfirmacion, idError, vector, idIngreso, idLista) {
             const input = document.getElementById(idInput);
             const confirmacion = document.getElementById(idConfirmacion);
             const error = document.getElementById(idError);
+            const ingreso = document.getElementById(idIngreso);
+            const lista = document.getElementById(idLista);
             const numero = parseInt(input.value);
 
             if (!isNaN(numero) && numero >= 1 && numero <= 100) {
@@ -75,7 +81,12 @@
                     input.value = '';
                     confirmacion.style.display = 'block';
                     error.style.display = 'none';
-                    mostrarVector(idInput, vector);
+                    ingreso.style.display = 'none';
+                    lista.style.display = 'block';
+                    mostrarVector(lista, vector);
+                    if (vector1.length === 5 && vector2.length === 5) {
+                        document.getElementById('mezclar').style.display = 'block';
+                    }
                 } else {
                     error.style.display = 'block';
                 }
@@ -84,15 +95,16 @@
             }
         }
 
-        function mostrarVector(idLista, vector) {
-            const lista = vector.join(', ');
-            document.getElementById(idLista + 'Listo').textContent = lista;
+        function mostrarVector(lista, vector) {
+            const contenido = vector.join(', ');
+            lista.innerHTML = `<p>${contenido}</p>`;
         }
 
         function mezclarVectores() {
             const vectorMezclado = [...vector1, ...vector2].sort((a, b) => a - b);
             const resultado = vectorMezclado.join(', ');
             document.getElementById('vectorMezclado').textContent = resultado;
+            document.getElementById('resultado').style.display = 'block';
         }
 
         function mostrarCreditos() {

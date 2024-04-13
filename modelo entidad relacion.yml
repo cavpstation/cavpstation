@@ -1,4 +1,6 @@
-...plantuml
+              - name: PlantUML Action
+                uses: Timmy/plantuml-action@v1
+            
 @startuml
 
 entity Cliente {

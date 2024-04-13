@@ -1,3 +1,4 @@
+...plantuml
 @startuml
 
 entity Cliente {

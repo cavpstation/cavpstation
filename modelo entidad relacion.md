@@ -1,0 +1,45 @@
+@startuml
+
+entity Cliente {
+    + id_cliente : int
+    --
+    nombre : string
+    direccion : string
+    telefono : string
+}
+
+entity Empleado {
+    + id_empleado : int
+    --
+    nombre : string
+    cargo : string
+    salario : decimal
+}
+
+entity Producto {
+    + id_producto : int
+    --
+    nombre : string
+    descripcion : string
+    precio : decimal
+}
+
+entity Pedido {
+    + id_pedido : int
+    --
+    fecha : date
+    estado : string
+}
+
+entity DetallePedido {
+    + id_detalle : int
+    --
+    cantidad : int
+}
+
+Cliente -- Pedido
+Empleado -- Pedido
+Producto -- DetallePedido
+Pedido -- DetallePedido
+
+@enduml

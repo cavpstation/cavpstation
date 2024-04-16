@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de Área y Perímetro</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="shortcut icon" href="https://www.sena.edu.co/SiteCollectionImages/favicon.ico"
+        type="image/vnd.microsoft.icon" id="favicon" />
+    <style>
+        .input {
+            font-size: 1.2rem;
+            border-radius: 8px;
+        }
+
+        #resultado {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            color: #f5f5f5;
+        }
+
+        .resultado-text {
+            background-color: #4a4a4a;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body class="has-background-dark">
+    <section id="fondo" class="hero is-dark is-fullheight">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title has-text-centered" id="titulo">Cálculo de Áreas y Perímetros</h1>
+                <div class="field">
+                    <label class="label has-text-white">Selecciona una figura para calcular su área y perímetro:</label>
+                    <div class="control">
+                        <div class="select">
+                            <select id="figura">
+                                <option value="Seleccionar" selected>Seleccionar figura</option>
+                                <option value="triangulo">Triángulo</option>
+                                <option value="rectangulo">Rectángulo</option>
+                                <option value="cuadrado">Cuadrado</option>
+                                <option value="circulo">Círculo</option>
+                                <option value="Acercade">Presentado por</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field" id="inputContainer">
+                    <!-- Los campos de entrada se agregarán dinámicamente aquí -->
+                </div>
+
+                <div class="field" id="botonContainer">
+                    <!-- El botón de calcular se mostrará aquí -->
+                </div>
+
+                <div id="resultado"></div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function validar() {
+            const figura = document.getElementById('figura').value;
+            let valido = true;
+            switch (figura) {
+                case 'triangulo':
+                    const baseTriangulo = parseFloat(document.getElementById('baseTriangulo').value);
+                    const alturaTriangulo = parseFloat(document.getElementById('alturaTriangulo').value);
+                    valido = !isNaN(baseTriangulo) && !isNaN(alturaTriangulo) && baseTriangulo > 0 && alturaTriangulo > 0;
+                    break;
+                case 'rectangulo':
+                    const baseRectangulo = parseFloat(document.getElementById('baseRectangulo').value);
+                    const alturaRectangulo = parseFloat(document.getElementById('alturaRectangulo').value);
+                    valido = !isNaN(baseRectangulo) && !isNaN(alturaRectangulo) && baseRectangulo > 0 && alturaRectangulo > 0;
+                    break;
+                case 'cuadrado':
+                    const ladoCuadrado = parseFloat(document.getElementById('ladoCuadrado').value);
+                    valido = !isNaN(ladoCuadrado) && ladoCuadrado > 0;
+                    break;
+                case 'circulo':
+                    const radioCirculo = parseFloat(document.getElementById('radioCirculo').value);
+                    valido = !isNaN(radioCirculo) && radioCirculo > 0;
+                    break;
+            }
+
+            if (!valido) {
+                alert('Por favor, ingresa valores válidos para todos los campos.');
+            }
+
+            return valido;
+        }
+
+        function calcular() {
+            if (!validar()) {
+                return;
+            }
+
+            const figura = document.getElementById('figura').value;
+            let resultado = '';
+            document.getElementById('resultado').style.display = 'block';
+            switch (figura) {
+                case 'triangulo':
+                    const baseTriangulo = parseFloat(document.getElementById('baseTriangulo').value);
+                    const alturaTriangulo = parseFloat(document.getElementById('alturaTriangulo').value);
+                    const cateto1 = parseFloat(document.getElementById('cateto1').value);
+                    const cateto2 = parseFloat(document.getElementById('cateto2').value);
+                    const perimetroTriangulo = baseTriangulo + cateto1 + cateto2;
+                    const areaTriangulo = (baseTriangulo * alturaTriangulo) / 2;
+                    resultado = `<div class="resultado-text">Perímetro: ${perimetroTriangulo}, Área: ${areaTriangulo}</div>`;
+                    break;
+                case 'rectangulo':
+                    const baseRectangulo = parseFloat(document.getElementById('baseRectangulo').value);
+                    const alturaRectangulo = parseFloat(document.getElementById('alturaRectangulo').value);
+                    const perimetroRectangulo = 2 * (baseRectangulo + alturaRectangulo);
+                    const areaRectangulo = baseRectangulo * alturaRectangulo;
+                    resultado = `<div class="resultado-text">Perímetro: ${perimetroRectangulo}, Área: ${areaRectangulo}</div>`;
+                    break;
+                case 'cuadrado':
+                    const ladoCuadrado = parseFloat(document.getElementById('ladoCuadrado').value);
+                    const perimetroCuadrado = ladoCuadrado * 4;
+                    const areaCuadrado = ladoCuadrado * ladoCuadrado;
+                    resultado = `<div class="resultado-text">Perímetro: ${perimetroCuadrado}, Área: ${areaCuadrado}</div>`;
+                    break;
+                case 'circulo':
+                    const radioCirculo = parseFloat(document.getElementById('radioCirculo').value);
+                    const perimetroCirculo = 2 * Math.PI * radioCirculo;
+                    const areaCirculo = Math.PI * Math.pow(radioCirculo, 2);
+                    resultado = `<div class="resultado-text">Perímetro: ${perimetroCirculo}, Área: ${areaCirculo}</div>`;
+                    break;
+            }
+            document.getElementById('resultado').innerHTML = resultado;
+        }
+
+        document.getElementById('figura').addEventListener('change', function () {
+            const figura = this.value;
+            const figuraEtiqueta = this.options[this.selectedIndex].text;
+            const bodyContainer = document.getElementById('fondo');
+            const inputContainer = document.getElementById('inputContainer');
+            const botonContainer = document.getElementById('botonContainer');
+            const Titulo = document.getElementById('titulo');
+            const TituloDinamico = 'Cálculo de Área y Perímetro del ';
+            document.getElementById('resultado').style.display = 'none';
+            document.getElementById('botonContainer').style.display = 'none';
+            switch (figura) {
+                case 'triangulo':
+                    document.getElementById('botonContainer').style.display = 'block';
+                    bodyContainer.className = 'hero is-info is-fullheight';
+                    Titulo.innerHTML = TituloDinamico + ` ${figuraEtiqueta} `;
+                    inputContainer.innerHTML = `
+                    <div class="has-text-centered" >
+                        <svg width="300px" height="100px">
+	<polygon fill="black" points="80 200, 180 30, 280 200" />
+</svg>
+</div> 
+<br /><br />
+<div class="columns control">
+                       
+                        <div class="column"><input class="input" type="number" id="alturaTriangulo" placeholder="Altura" required></div>
+                        <div class="column"><input class="input" type="number" id="baseTriangulo" placeholder="Base" required></div>
+                        <div class="column"><input class="input" type="number" id="cateto1" placeholder="Cateto 1" required></div>
+                        <div class="column"><input class="input" type="number" id="cateto2" placeholder="Cateto 2" required></div>
+                        </div>
+                        <br /><br />
+                    `;
+                    break;
+                case 'rectangulo':
+                    document.getElementById('botonContainer').style.display = 'block';
+                    Titulo.innerHTML = TituloDinamico + ` ${figuraEtiqueta} `;
+                    bodyContainer.className = 'hero is-link is-fullheight';
+                    inputContainer.innerHTML = `
+                    <div class="has-text-centered" >
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+     width="200" height="130" viewBox="0 0 130 200">
+  <rect x="10" y="10" width="200" height="130"
+        fill="#F14667" />
+</svg></div>
+<div class="columns control">
+                        <label class="label has-text-white" for="baseRectangulo">Base:</label>
+                        <div class="column"><input class="input" type="number" id="baseRectangulo" required></div>
+                        <label class="label has-text-white" for="alturaRectangulo">Altura:</label>
+                        <div class="column"><input class="input" type="number" id="alturaRectangulo" required></div>
+                        </div><br /><br />
+                    `;
+                    break;
+                case 'cuadrado':
+                    document.getElementById('botonContainer').style.display = 'block';
+                    Titulo.innerHTML = TituloDinamico + ` ${figuraEtiqueta} `;
+                    bodyContainer.className = 'hero is-danger is-fullheight';
+                    inputContainer.innerHTML = `
+                    <div class="has-text-centered" >
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+     width="100" height="100" viewBox="0 0 100 100">
+  <rect x="10" y="10" width="100" height="100"
+        fill="Orange" />
+</svg></div>
+                        <label class="label has-text-white" for="ladoCuadrado">Lado:</label>
+                        <input class="input" type="number" id="ladoCuadrado" required><br /><br />
+                    `;
+                    break;
+                case 'circulo':
+                    document.getElementById('botonContainer').style.display = 'block';
+                    Titulo.innerHTML = TituloDinamico + ` ${figuraEtiqueta} `;
+                    bodyContainer.className = 'hero is-warning is-fullheight';
+                    inputContainer.innerHTML = `<div class="has-text-centered" >
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+     width="120" height="120" viewBox="0 0 120 120">
+  <circle cx="60" cy="60" r="50"
+          fill="RoyalBlue" />
+</svg></div>
+                        <label class="label has-text-white" for="radioCirculo">Radio:</label>
+                        <input class="input" type="number" id="radioCirculo" required><br /><br />
+                    `;
+                    break;
+
+                case 'Seleccionar':
+                    bodyContainer.className = 'hero is-dark is-fullheight';
+                    Titulo.innerHTML ='Cálculo de Áreas y Perímetros' ;
+                    botonContainer.innerHTML = '';
+                    inputContainer.innerHTML = ''; // Limpiar los campos de entrada si no se selecciona ninguna figura
+
+                    break;
+
+                case 'Acercade':
+                    bodyContainer.className = 'hero is-black is-fullheight';
+                    Titulo.innerHTML = 'Créditos';
+                    inputContainer.innerHTML = '';
+                    inputContainer.innerHTML = `
+                     
+                    <article class="message">
+  <div class="message-header">
+    <p>Trabajo Presentado por</p>
+    <button class="delete" aria-label="delete"></button>
+  </div>
+  <div class="message-body has-text-centered">
+    <p>CARLOS ALBERTO VILLALBA PEÑA</p>
+    <p>SERVICIO NACIONAL DE APRENDIZAJE</p>
+<p>CENTRO AGRO TURÍSTICO </p>
+<p>TECNOLOGÍA EN ANÁLISIS Y DESARROLLO DE SOFTWARE</p>
+<p>FICHA # 2721546</p>
+<p>2024</p>
+ </div>
+</article> 
+                    `;
+                    botonContainer.innerHTML = '';
+                    break;
+
+                default:
+                    bodyContainer.className = 'hero is-dark is-fullheight';
+                    botonContainer.innerHTML = '';
+                    inputContainer.innerHTML = '';
+                // Limpiar los campos de entrada si no se selecciona ninguna figura
+
+            }
+
+            if (figura !== '' || figura !== 'Acercade') {
+                botonContainer.innerHTML = `
+                    <div class="control">
+                        <button class="button is-primary" onclick="calcular()">Calcular</button>
+                    </div>
+                `;
+            } else {
+
+                botonContainer.innerHTML = ''; // Limpiar el botón si se selecciona "Seleccionar figura"
+
+            }
+        });
+    </script>
+</body>
+
+</html>

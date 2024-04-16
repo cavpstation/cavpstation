@@ -1,0 +1,55 @@
+@startuml
+
+package "Superfoto" {
+
+    class Cliente {
+        - idCliente: int
+        - nombre: string
+        - email: string
+        - telefono: string
+        - direccion: string
+        - ciudad: string
+        - pais: string
+        + agregarPedido(pedido: Pedido): void
+        + eliminarPedido(pedido: Pedido): void
+        + listarPedidos(): List<Pedido>
+    }
+
+    class Empleado {
+        - idEmpleado: int
+        - nombre: string
+        - cargo: string
+        - salario: double
+        + agregarPedido(pedido: Pedido): void
+        + eliminarPedido(pedido: Pedido): void
+        + listarPedidos(): List<Pedido>
+    }
+
+    class Pedido {
+        - idPedido: int
+        - fecha: date
+        - total: double
+        - estado: string
+        - listaProductos: List<Producto>
+        + agregarProducto(producto: Producto): void
+        + eliminarProducto(producto: Producto): void
+        + calcularTotal(): double
+    }
+
+    class Producto {
+        - idProducto: int
+        - nombre: string
+        - precio: double
+        - cantidadStock: int
+        - descripcion: string
+        + aumentarStock(cantidad: int): void
+        + reducirStock(cantidad: int): void
+    }
+
+    Cliente "1" -- "0..*" Pedido : realiza
+    Empleado "1" -- "0..*" Pedido : atiende
+    Pedido "1" o-- "1..*" Producto : contiene
+
+}
+
+@enduml
